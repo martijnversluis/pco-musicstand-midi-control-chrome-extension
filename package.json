@@ -1,0 +1,48 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.9.6",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.1",
+    "chrome-web-store-api": "^0.0.4",
+    "concurrently": "^5.2.0",
+    "semver": "^7.3.2",
+    "watchify": "^3.11.1"
+  },
+  "scripts": {
+    "build:background": "node_modules/.bin/browserify src/background.js -o package/background.js",
+    "build:content_script": "node_modules/.bin/browserify src/content_script.js -o package/content_script.js",
+    "build:options": "node_modules/.bin/browserify src/options.js -o package/options.js",
+    "build:page_script": "node_modules/.bin/browserify src/page_script.js -o package/page_script.js",
+    "build": "yarn build:background && yarn build:content_script && yarn build:options && yarn build:page_script",
+    "watch:background": "node_modules/.bin/watchify src/background.js -o package/background.js -v",
+    "watch:content_script": "node_modules/.bin/watchify src/content_script.js -o package/content_script.js -v",
+    "watch:options": "node_modules/.bin/watchify src/options.js -o package/options.js -v",
+    "watch:page_script": "node_modules/.bin/watchify src/page_script.js -o package/page_script.js -v",
+    "watch": "node_modules/.bin/concurrently \"yarn watch:background\" \"yarn watch:content_script\" \"yarn watch:options\" \"yarn watch:page_script\"",
+    "release": "yarn release:zip && yarn release:commit && yarn release:tag",
+    "release:zip": "zip -r \"$(bin/version).zip\" package",
+    "release:commit": "git add package/manifest.json && git commit -m \"Bump to $(bin/version)\" && git push origin master",
+    "release:tag": "git tag $(bin/version) && git push origin $(bin/version)",
+    "release:patch": "bin/bump_version patch && yarn release",
+    "release:minor": "bin/bump_version minor && yarn release",
+    "release:major": "bin/bump_version major && yarn release"
+  },
+  "license": "GPL-3.0-or-later",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/preset-env"
+          ],
+          "plugins": [
+            "@babel/plugin-proposal-class-properties"
+          ]
+        }
+      ]
+    ]
+  }
+}

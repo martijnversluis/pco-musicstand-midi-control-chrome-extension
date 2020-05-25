@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+'use strict';
+
+const ChromeWebStore = require('chrome-web-store-api');
+const fs = require('fs');
+
+const chromeWebStore = new ChromeWebStore(
+  JSON.parse(fs.readFileSync('.credentials/chrome_web_store_api_credential.json')),
+  JSON.parse(fs.readFileSync('.credentials/chrome_web_store_api_access_token_response.json')),
+);
+
+const version = process.argv[2];
+
+if (!version) {
+  throw new Error('No version for publishing specified');
+}
+
+const itemId = 'ID of your Chrome extension';
+const packageFile = `${version}.zip`;
+
+(async () => {
+  try {
+    const item = await (new chromeWebStore.Item(itemId)).fetch();
+    const readStream = fs.createReadStream(packageFile);
+    const uploadResult = await item.upload(readStream);
+
+    if (uploadResult.uploadState === 'FAILURE') {
+      const message = (uploadResult.itemError || []).map(error => error.error_detail).join('\n');
+      throw new Error(message);
+    }
+
+    console.log('Upload succeeded.');
+
+    const publishResult = await item.publish();
+    (publishResult.statusDetail || []).forEach(detail => console.log(detail));
+  } catch (error) {
+    console.error(error);
+  }
+})();

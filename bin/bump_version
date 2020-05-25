@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+'use strict';
+
+const fs = require('fs');
+const semver = require('semver');
+
+const BUMP_LEVELS = ['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease'];
+const MANIFEST_FILE = 'package/manifest.json';
+
+const bumpLevel = process.argv[2];
+const prereleaseIdentifier = process.argv[3];
+
+if (!BUMP_LEVELS.includes(bumpLevel)) {
+  throw new Error(`Invalid bump level ${bumpLevel}`);
+}
+
+const contents = fs.readFileSync(MANIFEST_FILE);
+const manifest = JSON.parse(contents);
+const bumpedVersion = semver.inc(manifest.version, bumpLevel, prereleaseIdentifier);
+
+if (!bumpedVersion) {
+  throw new Error('Could not bump version');
+}
+
+const modifiedJson = JSON.stringify({...manifest, version: bumpedVersion}, null, '  ');
+fs.writeFileSync(MANIFEST_FILE, modifiedJson);

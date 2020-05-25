@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+'use strict';
+
+const fs = require('fs');
+const contents = fs.readFileSync('package/manifest.json');
+const manifest = JSON.parse(contents);
+
+console.log(`v${manifest.version}`);

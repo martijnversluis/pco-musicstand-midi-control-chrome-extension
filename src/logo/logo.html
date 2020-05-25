@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logo</title>
+  <style type="text/css">
+    html {
+      --background: #245196;
+      --foreground: #fff;
+      --logo-size: 600px;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    body * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      padding: 50px 100px 0 100px;
+      width: var(--logo-size);
+      height: var(--logo-size);
+      background-color: var(--background);
+      border-radius: 10%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    svg > * {
+      fill: var(--foreground);
+    }
+
+    .bottom {
+      flex: 0 0 50%;
+    }
+
+    .top {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: row;
+    }
+
+    .top-left {
+      flex: 0 0 60%;
+    }
+
+    .top-right {
+      flex: 1 1 auto;
+    }
+
+    .remote {
+      padding-bottom: 100px;
+      padding-left: 30px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="top">
+    <div class="top-left">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" class="musical-note">
+        <path d="M8 0c-5 0-6 1-6 1v4.09c-.15-.05-.33-.09-.5-.09-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5v-3.97c.73-.23 1.99-.44 4-.5v2.06c-.15-.05-.33-.09-.5-.09-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5v-5.5z" />
+      </svg>
+    </div>
+    <div class="top-right">
+      <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" class="remote">
+        <path d="M1 0v1c3.32 0 6 2.68 6 6h1c0-3.86-3.14-7-7-7zm0 2v1c2.21 0 4 1.79 4 4h1c0-2.76-2.24-5-5-5zm0 2v1c1.11 0 2 .89 2 2h1c0-1.65-1.35-3-3-3zm0 2c-.55 0-1 .45-1" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <svg version="1.1" width="1000" height="455" viewBox="137 119 712 278" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" class="midi">
+      <path aria-label="M" text-data="M" d="M137,96h233c19.6,0,31,16.9,31,37v229h-65V163h-38v199h-59V163h-37v199h-65V96z"/>
+      <rect aria-label="I" text-data="I" x="433" y="96" width="65" height="266"/>
+      <path aria-label="D" text-data="D" d="M529,96h193c19.6,0,31,16.9,31,37v196c0,24.9-10.4,33-33,33H529V193h66v104h93V156H529V96z"/>
+      <rect aria-label="I" text-data="I" x="783" y="96" width="66" height="266"/>
+    </svg>
+  </div>
+</div>
+</body>
+</html>
