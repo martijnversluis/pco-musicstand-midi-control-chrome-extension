@@ -22,7 +22,7 @@
     "watch:page_script": "node_modules/.bin/watchify src/page_script.js -o package/page_script.js -v",
     "watch": "node_modules/.bin/concurrently \"yarn watch:background\" \"yarn watch:content_script\" \"yarn watch:options\" \"yarn watch:page_script\"",
     "release": "yarn release:zip && yarn release:commit && yarn release:tag",
-    "release:zip": "zip -r \"$(bin/version).zip\" package",
+    "release:zip": "zip -r \"$(bin/version).zip\" package -x \"*.DS_Store\"",
     "release:commit": "git add package/manifest.json && git commit -m \"Bump to $(bin/version)\" && git push origin master",
     "release:tag": "git tag $(bin/version) && git push origin $(bin/version)",
     "release:patch": "bin/bump_version patch && yarn release",
