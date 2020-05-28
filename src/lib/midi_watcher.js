@@ -1,7 +1,10 @@
+import MIDIMessage from './midi_message';
+
 class MIDIWatcher {
-  constructor({ midiInputs, onMIDIMessage }) {
+  constructor({ midiInputs, onMIDIMessage, messageTypes }) {
     this.midiInputs = midiInputs;
     this.onMIDIMessage = onMIDIMessage;
+    this.messageTypes = messageTypes;
     this.midiMessageReceived = this.midiMessageReceived.bind(this);
   }
 
@@ -29,7 +32,11 @@ class MIDIWatcher {
   }
 
   midiMessageReceived(event) {
-    this.onMIDIMessage(event);
+    const midiMessage = new MIDIMessage(event.data);
+
+    if (this.messageTypes.includes(midiMessage.type)) {
+      this.onMIDIMessage(event);
+    }
   }
 }
 

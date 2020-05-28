@@ -1,6 +1,7 @@
 import MIDIWatcher from './midi_watcher';
 import MIDIMessageHandlerConfigurationRow from './midi_message_handler_configuration_row';
 import { GOTO_SLIDE, NEXT_SLIDE, PREVIOUS_SLIDE } from './constants';
+import MIDIMessage from './midi_message';
 
 class MIDIMessageHandlerConfigurationUI {
   static ACTION_DESCRIPTIONS = {
@@ -19,7 +20,12 @@ class MIDIMessageHandlerConfigurationUI {
     this.onMidiMessage = this.onMidiMessage.bind(this);
     this.container = container;
     this.midiInputs = midiInputs;
-    this.midiWatcher = new MIDIWatcher({ midiInputs, onMIDIMessage: this.onMidiMessage });
+
+    this.midiWatcher = new MIDIWatcher({
+      midiInputs,
+      onMIDIMessage: this.onMidiMessage,
+      messageTypes: [MIDIMessage.NOTE_ON, MIDIMessage.CONTROL_CHANGE, MIDIMessage.PROGRAM_CHANGE],
+    });
 
     this.constructor.fetchSettings((settings) => {
       this.settings = settings;

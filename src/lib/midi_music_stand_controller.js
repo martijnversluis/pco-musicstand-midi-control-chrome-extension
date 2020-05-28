@@ -1,7 +1,6 @@
 import MIDIWatcher from './midi_watcher';
 import MIDIMessage from './midi_message';
-import { GOTO_SLIDE, NEXT_SLIDE, PREVIOUS_SLIDE } from './constants';
-import { MUSIC_STAND_REMOTE } from './constants';
+import { GOTO_SLIDE, NEXT_SLIDE, PREVIOUS_SLIDE, MUSIC_STAND_REMOTE } from './constants';
 
 class MIDIMusicStandController {
   constructor({ midiInputs, settings, messageBus }) {
@@ -10,7 +9,8 @@ class MIDIMusicStandController {
 
     this.midiWatcher = new MIDIWatcher({
       midiInputs,
-      onMIDIMessage: this.onMidiMessage.bind(this)
+      onMIDIMessage: this.onMidiMessage.bind(this),
+      messageTypes: [MIDIMessage.NOTE_ON, MIDIMessage.CONTROL_CHANGE, MIDIMessage.PROGRAM_CHANGE],
     });
   }
 

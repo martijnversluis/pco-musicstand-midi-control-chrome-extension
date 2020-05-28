@@ -2,13 +2,13 @@ class MIDIMessage {
   static NOTE_ON = 0b1001;
   static CONTROL_CHANGE = 0b1011;
   static PROGRAM_CHANGE = 0b1100;
-  static ALLOWED = [MIDIMessage.NOTE_ON, MIDIMessage.CONTROL_CHANGE, MIDIMessage.PROGRAM_CHANGE];
 
   constructor(bytes) {
     this.type = bytes[0] >> 4;
     this.channel = bytes[0] & 0b1111;
     this.data_1 = bytes[1];
     this.data_2 = bytes[2];
+    this.data = bytes;
   }
 
   get idBytes() {
@@ -61,8 +61,7 @@ class MIDIMessage {
   }
 
   matchesExact(otherMessage, { matchChannel = true } = {}) {
-    return this.matches(otherMessage, { matchChannel }) &&
-      (this.valueByte === otherMessage.valueByte);
+    return this.matches(otherMessage, { matchChannel }) && (this.valueByte === otherMessage.valueByte);
   }
 }
 
