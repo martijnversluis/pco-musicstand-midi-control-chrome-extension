@@ -3,3 +3,4 @@ package/*.js
 node_modules
 .credentials
 **/.DS_Store
+webstore_content
