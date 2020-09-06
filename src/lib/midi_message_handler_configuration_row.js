@@ -40,8 +40,18 @@ class MIDIMessageHandlerConfigurationRow {
   serializableSettings() {
     return {
       [this.constructor.DEVICE_SETTINGS_KEY]: this.device.get(),
-      [this.constructor.TRIGGER_MESSAGE_SETTINGS_KEY]: this.triggerMessage.get(),
+      [this.constructor.TRIGGER_MESSAGE_SETTINGS_KEY]: this.serializableTriggerMessage,
     };
+  }
+
+  get serializableTriggerMessage() {
+    const triggerMessage = this.triggerMessage.get();
+
+    if (triggerMessage) {
+      return Array.from(triggerMessage);
+    }
+
+    return null;
   }
 
   formatMIDIMessage(message) {

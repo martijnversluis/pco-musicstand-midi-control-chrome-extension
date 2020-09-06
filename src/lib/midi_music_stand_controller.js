@@ -35,11 +35,16 @@ class MIDIMusicStandController {
     const midiMessage = new MIDIMessage(data);
 
     Object.keys(this.settings).forEach((key) => {
-      const settings = this.settings[key];
-      const triggerMessage = new MIDIMessage(settings.triggerMessage);
-      const deviceMatches = (settings.device === 'all' || settings.device === deviceId);
-      const messageMatches = midiMessage.matches(triggerMessage);
-      const messageMatchesExact = midiMessage.matchesExact(triggerMessage);
+      const { triggerMessage, device } = this.settings[key];
+
+      if (!triggerMessage) {
+        return;
+      }
+
+      const trigger = new MIDIMessage(triggerMessage);
+      const deviceMatches = (device === 'all' || device === deviceId);
+      const messageMatches = midiMessage.matches(trigger);
+      const messageMatchesExact = midiMessage.matchesExact(trigger);
 
       if (deviceMatches && messageMatches) {
         switch (key) {
