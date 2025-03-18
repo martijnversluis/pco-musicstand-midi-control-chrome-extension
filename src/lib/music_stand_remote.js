@@ -45,18 +45,18 @@ class MusicStandRemote {
   }
 
   gotoSlide(number) {
-    if (number >= 0 && number <= this.slideCount) {
+    if (number >= 1 && number <= this.slideCount) {
       this.pageController.currentPageGroup = number;
       this.pageController.showCurrentPageGroup();
     }
   }
 
   previousSlide() {
-    this.gotoSlide(this.pageController.currentPageGroup - 1);
+    this.pageController.previous();
   }
 
   nextSlide() {
-    this.gotoSlide(this.pageController.currentPageGroup + 1);
+    this.pageController.next();
   }
 }
 

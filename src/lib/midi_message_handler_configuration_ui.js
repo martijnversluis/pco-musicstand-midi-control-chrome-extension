@@ -90,15 +90,15 @@ class MIDIMessageHandlerConfigurationUI {
     });
   }
 
-  listenOnDevice(deviceId) {
-    switch (deviceId) {
-      case '':
+  listenOnDevice(deviceName) {
+    switch (deviceName) {
+      case 'none':
         break;
       case 'all':
         this.midiWatcher.listenOnAll();
         break;
       default:
-        this.midiWatcher.listenOn(deviceId);
+        this.midiWatcher.listenOn(deviceName);
     }
   }
 

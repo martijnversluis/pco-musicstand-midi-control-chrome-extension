@@ -4,3 +4,4 @@ node_modules
 .credentials
 **/.DS_Store
 webstore_content
+package-lock.json

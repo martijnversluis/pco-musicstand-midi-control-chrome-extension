@@ -15,13 +15,13 @@ class MIDIMusicStandController {
   }
 
   start() {
-    const deviceIds = Object.keys(this.settings).map((key) => this.settings[key].device);
-    console.log('controller starting watch on', deviceIds);
+    const deviceNames = Object.keys(this.settings).map((key) => this.settings[key].device);
+    console.log('controller starting watch on', deviceNames);
 
-    if (deviceIds.includes('all')) {
+    if (deviceNames.includes('all')) {
       this.midiWatcher.listenOnAll();
     } else {
-      this.midiWatcher.listenOn(deviceIds);
+      this.midiWatcher.listenOn(deviceNames);
     }
   }
 
@@ -31,7 +31,7 @@ class MIDIMusicStandController {
 
   onMidiMessage(event) {
     console.log('received', event);
-    const { data, target: { id: deviceId }} = event;
+    const { data, target: { name: deviceName }} = event;
     const midiMessage = new MIDIMessage(data);
 
     Object.keys(this.settings).forEach((key) => {
@@ -42,7 +42,7 @@ class MIDIMusicStandController {
       }
 
       const trigger = new MIDIMessage(triggerMessage);
-      const deviceMatches = (device === 'all' || device === deviceId);
+      const deviceMatches = (device === 'all' || device === deviceName);
       const messageMatches = midiMessage.matches(trigger);
       const messageMatchesExact = midiMessage.matchesExact(trigger);
 

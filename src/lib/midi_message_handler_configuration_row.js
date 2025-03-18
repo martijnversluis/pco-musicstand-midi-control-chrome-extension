@@ -15,15 +15,23 @@ class MIDIMessageHandlerConfigurationRow {
     this.triggerLabel = div();
     this.triggerMessage = new Observable(settings[this.constructor.TRIGGER_MESSAGE_SETTINGS_KEY]);
 
-    this.device = new Observable(settings[this.constructor.DEVICE_SETTINGS_KEY] || 'all')
-      .bind(this.deviceSelector)
-      .addObserver(({ newValue: device }) => this.recordButton.disabled = !device);
-
     this.recording = new Observable(false)
       .addObserver(({ newValue: recording }) => {
         this.recordButton.innerText = (recording ? 'Recording...' : 'Record');
         this.recordButton.style.fontWeight = (recording ? 'bold' : 'normal');
         this.deviceSelector.disabled = recording;
+      });
+
+    this.device = new Observable(settings[this.constructor.DEVICE_SETTINGS_KEY] || 'all')
+      .bind(this.deviceSelector)
+      .addObserver(({ newValue: device }) => {
+        if (device == 'none' || !device) {
+          this.recordButton.disabled = true;
+          this.triggerMessage.set(null);
+          this.recording.set(false);
+        } else {
+          this.recordButton.disabled = false;
+        }
       });
 
     new Computed(() => this.serializableSettings(), [this.device, this.triggerMessage])
@@ -83,11 +91,11 @@ class MIDIMessageHandlerConfigurationRow {
   buildDeviceSelector(midiInputs) {
     const select = document.createElement('select');
     select.dataset.title = 'Select MIDI device';
-    option(select, '', '- Choose a MIDI device -');
+    option(select, 'none', 'None');
     option(select, 'all', 'All');
 
     for (const input of midiInputs) {
-      option(select, input.id, input.name);
+      option(select, input.name, input.name);
     }
 
     return select;
