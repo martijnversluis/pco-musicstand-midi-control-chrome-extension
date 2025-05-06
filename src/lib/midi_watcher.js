@@ -16,15 +16,15 @@ class MIDIWatcher {
     console.log('Listening on all devices');
   }
 
-  listenOn(deviceIdOrIds) {
-    const deviceIds = [deviceIdOrIds].flat();
+  listenOn(deviceNameOrNames) {
+    const deviceNames = [deviceNameOrNames].flat();
 
     this.stop();
     this.midiInputs
-      .filter((input) => deviceIds.includes(input.id))
+      .filter((input) => deviceNames.includes(input.name))
       .forEach((input) => input.onmidimessage = this.midiMessageReceived);
 
-    console.log('Listening on devices', deviceIds);
+    console.log('Listening on devices', deviceNameOrNames);
   }
 
   stop() {

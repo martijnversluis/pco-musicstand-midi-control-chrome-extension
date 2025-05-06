@@ -18,7 +18,7 @@ export function fetchSettings(callback) {
 export function withMIDIInputs(callback) {
   console.log('requesting midi access...');
 
-  navigator.requestMIDIAccess()
+  navigator.requestMIDIAccess({ sysex: false, software: false })
     .then((midiAccess) => {
       console.log('midi access granted');
       const inputs = Array.from(midiAccess.inputs.values());
@@ -32,6 +32,6 @@ export function withMIDIInputs(callback) {
 export function injectScript(file) {
   const script = document.createElement('script');
   script.setAttribute('type', 'text/javascript');
-  script.setAttribute('src', chrome.extension.getURL(`/${file}`));
+  script.setAttribute('src', chrome.runtime.getURL(`/${file}`));
   document.body.appendChild(script);
 }
