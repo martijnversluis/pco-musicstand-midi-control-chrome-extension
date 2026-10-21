@@ -59,7 +59,10 @@ class MIDIMusicStandController {
             }
             break;
           case GOTO_SLIDE:
-            this.sendMessage(GOTO_SLIDE, { slide: data[1] + 1 });
+            if (midiMessage.valueByte !== this.lastGotoSlide) {
+              this.lastGotoSlide = midiMessage.valueByte;
+              this.sendMessage(GOTO_SLIDE, { slide: midiMessage.valueByte });
+            }
             break;
         }
       }
