@@ -1,6 +1,10 @@
 import { GOTO_SLIDE, NEXT_SLIDE, PREVIOUS_SLIDE } from './constants';
 import { MUSIC_STAND_REMOTE } from './constants';
 
+const STEP_DELAY_MS = 150;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 class MusicStandRemote {
   constructor() {
     this.messageReceived = this.messageReceived.bind(this);
@@ -14,12 +18,23 @@ class MusicStandRemote {
     window.removeEventListener('message', this.messageReceived);
   }
 
-  get pageController() {
-    return window.music_stand.page_controller;
+  get previousButton() {
+    return document.querySelector('#pagination button[aria-label="Previous page"]');
   }
 
-  get slideCount() {
-    return document.querySelectorAll('.selected .page_group').length;
+  get nextButton() {
+    return document.querySelector('#pagination button[aria-label="Next page"]');
+  }
+
+  get docIndicator() {
+    const text = document.querySelector('#pagination .doc_indicator')?.textContent ?? '';
+    const match = text.match(/(\d+)\s+of\s+(\d+)/i);
+
+    if (!match) {
+      return null;
+    }
+
+    return { current: parseInt(match[1], 10), total: parseInt(match[2], 10) };
   }
 
   messageReceived(event) {
@@ -44,19 +59,45 @@ class MusicStandRemote {
     }
   }
 
-  gotoSlide(number) {
-    if (number >= 1 && number <= this.slideCount) {
-      this.pageController.currentPageGroup = number;
-      this.pageController.showCurrentPageGroup();
-    }
-  }
-
   previousSlide() {
-    this.pageController.previous();
+    this.previousButton?.click();
   }
 
   nextSlide() {
-    this.pageController.next();
+    this.nextButton?.click();
+  }
+
+  async gotoSlide(number) {
+    const indicator = this.docIndicator;
+
+    if (!indicator || number < 1 || number > indicator.total) {
+      return;
+    }
+
+    const token = {};
+    this.gotoToken = token;
+
+    const maxSteps = indicator.total + 2;
+
+    for (let step = 0; step < maxSteps; step++) {
+      if (this.gotoToken !== token) {
+        return;
+      }
+
+      const current = this.docIndicator?.current;
+
+      if (current == null || current === number) {
+        return;
+      }
+
+      if (current < number) {
+        this.nextSlide();
+      } else {
+        this.previousSlide();
+      }
+
+      await sleep(STEP_DELAY_MS);
+    }
   }
 }
 
