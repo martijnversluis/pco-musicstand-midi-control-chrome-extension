@@ -1,6 +1,6 @@
 {
   "name": "PCO MusicStand MIDI control",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Control PCO MusicStand (web version) using MIDI commands",
   "manifest_version": 3,
   "permissions": [
